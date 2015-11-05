@@ -201,6 +201,29 @@ public class HandEval {
 		
 		return percent;
 	}
+	public double threeOfKindPercent(){
+		currentHand.sortByRank();
+		int x = 0;
+		int i = 0;
+		int j = 0;
+		double percent = 0;
+		while (x < currentHand.handSize()- 2){ // if 3 cards are the same
+			if (currentHand.get(x).getRank() == currentHand.get(x+2).getRank()){
+				percent = 1;
+				return percent;
+			}
+			x++;
+		}
+		while(i< currentHand.handSize()-1){ // looking for pairs
+			if(currentHand.get(i).getRank() == currentHand.get(i+1).getRank()){
+				percent = (2/(52 - currentHand.handSize()));
+				return percent;
+			}
+			i++;
+		}
+		percent = (2/(52-currentHand.handSize())) * (1 / 51 - (currentHand.handSize()));
+		return percent;
+	}
 }
 
 
