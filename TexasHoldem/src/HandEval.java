@@ -142,6 +142,36 @@ public class HandEval {
 		return percent;
 	}
 	public double fullHousePercent(){
+		currentHand.sortByRank();
+		int x = 0;
+		int i = 0;
+		int j = 0;
+		double percent = 0;
+		while (x < currentHand.handSize()- 2){ // if 3 cards are the same
+			if (currentHand.get(x).getRank() == currentHand.get(x+2).getRank()){
+				while (i < currentHand.handSize()){
+					if (currentHand.get(i).getRank() == currentHand.get(i+1).getRank()){
+						percent = 1;
+						return percent;
+					}
+					i++;
+				}
+			}
+			x++;
+		}
+		if(twoPairsPercent() == 1.0){
+			percent = (2.0/13.0);
+			return percent;
+		}
+		if (threeOfKindPercent() == 1.0 && currentHand.handSize() <= 6){
+			percent = ((currentHand.handSize()-3)/13.0);
+			return percent;
+		}
+		if(pairPercent() == 1 && currentHand.handSize() == 5){
+			percent = (3.0/13.0) * (1.0/13.0)*(1.0/12.0);
+			return percent;
+		}
+		return percent;
 	}
 	public double flushPercent(){
 		Hand goodCards = new Hand(); // we temp store all the cards that fit the description
@@ -224,6 +254,78 @@ public class HandEval {
 		percent = (2/(52-currentHand.handSize())) * (1 / 51 - (currentHand.handSize()));
 		return percent;
 	}
+	public double twoPairsPercent(){
+		currentHand.sortByRank();
+		int x = 0;
+		double percent = 0;
+		int pairs = 0;
+		while (x < currentHand.handSize()- 1){ // if 2 cards are the same
+			if (currentHand.get(x).getRank() == currentHand.get(x+1).getRank()){
+				pairs += 1;
+				x++;
+			}
+			x++;
+		}
+		if (pairs == 2){
+			percent = 1;
+			return percent; 
+		}
+		if (pairs == 1){
+			percent = (currentHand.handSize() - 2)/13;
+			return percent;
+		}
+		if (currentHand.handSize() == 5){
+			percent = ((5.0/13.0) * (4.0/13.0));
+			return percent;
+		}
+		return percent;
+	}
+	public double pairPercent(){
+		currentHand.sortByRank();
+		int x = 0;
+		int i =0;
+		double percent = 0;
+		while (x < currentHand.handSize()- 1){ // if 3 cards are the same
+			if (currentHand.get(x).getRank() == currentHand.get(x+1).getRank()){
+				percent = 1;
+				return percent;
+			}
+			x++;
+		}
+			percent = (currentHand.handSize() / 13.0);
+		return percent;
+	}
+	public double highCardPercent(){
+		currentHand.sortByRank();
+		double percent = 0;
+		percent = currentHand.get(currentHand.handSize()-1).getRank() * .0714;
+		return percent;
+		
+	}
+	private double openEndStraight(){
+		Hand goodCards = new Hand();
+		int x = 1;
+		int i = 0;
+		double percent = 0;
+		goodCards.sortByRank();
+		while(x<currentHand.handSize()){
+			if(currentHand.get(x).getRank() == currentHand.get(x+1).getRank()-1 && currentHand.get(x).getRank() == currentHand.get(x-1).getRank()+1){
+				goodCards.addToHand(currentHand.get(x));
+				goodCards.addToHand(currentHand.get(x-1));
+				goodCards.addToHand(currentHand.get(x+1));
+			}
+			else{
+				x++;
+			}
+			if(currentHand.get(x-1).getRank() == currentHand.get(x).getRank()-1){
+				currentHand.addToHand(currentHand.get(x-1));
+				x++;
+				
+		
+		}
+	}
+	
+
 }
 
-
+}
