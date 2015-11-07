@@ -4,10 +4,7 @@ public class HandEval {
 	Hand currentHand = new Hand();
 	// Constructor
 	public HandEval(Hand h){
-		currentHand = h;
-		ArrayList<Double> chanceToWin = new ArrayList<Double>();    
-	}
-	public ArrayList<Double> evaluateHand(){
+		currentHand = h;   
 	}
 	/**
 	 * 
@@ -66,49 +63,49 @@ public class HandEval {
 	public double straightFlushPercent(){
 		Hand goodCards = new Hand(); // we temp store all the cards that fit the description
 		double percent = 0;
-		int i =0;
-		int z = 0;
-		int x = 0;
-		int missingCards = 0;
-		while(z<4){
-			while (i<currentHand.handSize()){ // putting in hand all of same suit
-				if (currentHand.get(i).getSuit() == z+1){
-					goodCards.addToHand(currentHand.get(i));
-					i++;
+		int j = 0;
+		while(j<4){
+			int i =0;
+			int z = 0;
+			int x = 0;
+			int k =0;
+			while (k<currentHand.handSize()){ // putting in hand all of same suit
+				if (currentHand.get(k).getSuit() == j+1){
+					goodCards.addToHand(currentHand.get(k));
+					k++;
 				}
 				else{
-					i++;
+					k++;
 				}
 			}
 			goodCards.sortByRank();
-			if((goodCards.handSize() >= 5) && (goodCards.get(4).getRank() - (goodCards.get(0).getRank()+4) == 0)){
-				percent = 1.0;
-				return percent;
+			ArrayList<Integer> binaryArray = new ArrayList<Integer>();
+			while (x< 14){
+				binaryArray.add(1);
+				x++;
 			}
-			while(x < (goodCards.handSize()-1)){
-				if (goodCards.get(x).getRank() == (goodCards.get(x+1).getRank() - 1)){
-					x++;
+			while (i < goodCards.handSize()){
+				int replace = goodCards.get(i).getRank()-1;
+				binaryArray.set(replace, 0);
+				i++;
+			}
+			while (z < binaryArray.size()-4){
+				int totalCardsNeeded = binaryArray.get(z) + binaryArray.get(z+1) 
+					+ binaryArray.get(z+2) + binaryArray.get(z+3) + binaryArray.get(z+4);
+				if (totalCardsNeeded == 0){
+					percent = 1;
+					return percent;
 				}
-				else{
-					missingCards++;
-					x++;
+				if (totalCardsNeeded == 1){
+					percent = percent + (1.0/(52.0 - currentHand.handSize()));
 				}
+				if(totalCardsNeeded == 2 && currentHand.handSize() < 6){
+					percent = percent + (1.0/(52.0 - currentHand.handSize()) * (4.0/(51.0 - currentHand.handSize())));
+				}
+				z++;
 			}
-			double cardsLeft = 52 - currentHand.handSize();
-			double percentage = 1;
-			while (missingCards > 0){	// calc odds to chance to get straight flush
-				percentage = percentage * (missingCards/cardsLeft);
-				System.out.println("percent " +  percentage);
-				missingCards--;
-				cardsLeft--;
-				percent = percent + percentage;
-			}
-			missingCards = 0;
-			x = 0;
-			i = 0;
-			System.out.println("percent here to -" + percent );
-			z++;
 			goodCards.clear();
+			j++;
 		}
 		return percent;
 	}	
@@ -145,7 +142,6 @@ public class HandEval {
 		currentHand.sortByRank();
 		int x = 0;
 		int i = 0;
-		int j = 0;
 		double percent = 0;
 		while (x < currentHand.handSize()- 2){ // if 3 cards are the same
 			if (currentHand.get(x).getRank() == currentHand.get(x+2).getRank()){
@@ -210,32 +206,41 @@ public class HandEval {
 	}
 	public double straightPercent(){
 		currentHand.sortByRank();
-		int x = 0;
+		ArrayList<Integer> binaryArray = new ArrayList<Integer>();
+		int x = 0; 
 		int i = 0;
-		int j = 0;
+		int z = 0;
 		double percent = 0;
-		while (x < currentHand.handSize()- 4){
-			if ((currentHand.get(x+4).getRank() - currentHand.get(x).getRank()) == 4){
+		while (x< 14){
+			binaryArray.add(1);
+			x++;
+		}
+		while (i < currentHand.handSize()){
+			int replace = currentHand.get(i).getRank();
+			binaryArray.set(replace, 0);
+			i++;
+		}
+		while (z < binaryArray.size()-4){
+			int totalCardsNeeded = binaryArray.get(z) + binaryArray.get(z+1) 
+				+ binaryArray.get(z+2) + binaryArray.get(z+3) + binaryArray.get(z+4);
+			if (totalCardsNeeded == 0){
 				percent = 1;
 				return percent;
 			}
-			x++;
-		}
-		while (i < currentHand.handSize()- 4){
-			if (currentHand.handSize() == 5){
-				
-
+			if (totalCardsNeeded == 1){
+				percent = percent + (4.0/(52.0 - currentHand.handSize()));
 			}
-			i++;
+			if(totalCardsNeeded == 2 && currentHand.handSize() < 6){
+				percent = percent + (4.0/(52.0 - currentHand.handSize()) * (4.0/(51.0 - currentHand.handSize())));
+			}
+			z++;
 		}
-		
 		return percent;
 	}
 	public double threeOfKindPercent(){
 		currentHand.sortByRank();
 		int x = 0;
 		int i = 0;
-		int j = 0;
 		double percent = 0;
 		while (x < currentHand.handSize()- 2){ // if 3 cards are the same
 			if (currentHand.get(x).getRank() == currentHand.get(x+2).getRank()){
@@ -283,7 +288,6 @@ public class HandEval {
 	public double pairPercent(){
 		currentHand.sortByRank();
 		int x = 0;
-		int i =0;
 		double percent = 0;
 		while (x < currentHand.handSize()- 1){ // if 3 cards are the same
 			if (currentHand.get(x).getRank() == currentHand.get(x+1).getRank()){
@@ -302,30 +306,4 @@ public class HandEval {
 		return percent;
 		
 	}
-	private double openEndStraight(){
-		Hand goodCards = new Hand();
-		int x = 1;
-		int i = 0;
-		double percent = 0;
-		goodCards.sortByRank();
-		while(x<currentHand.handSize()){
-			if(currentHand.get(x).getRank() == currentHand.get(x+1).getRank()-1 && currentHand.get(x).getRank() == currentHand.get(x-1).getRank()+1){
-				goodCards.addToHand(currentHand.get(x));
-				goodCards.addToHand(currentHand.get(x-1));
-				goodCards.addToHand(currentHand.get(x+1));
-			}
-			else{
-				x++;
-			}
-			if(currentHand.get(x-1).getRank() == currentHand.get(x).getRank()-1){
-				currentHand.addToHand(currentHand.get(x-1));
-				x++;
-				
-		
-		}
-	}
-	
-
-}
-
 }
