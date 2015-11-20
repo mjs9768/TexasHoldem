@@ -11,9 +11,10 @@ import java.util.ArrayList;
  */
 public class Hand {
 	
-	ArrayList<Card> hand = new ArrayList<Card>();
+	private ArrayList<Card> hand;
 	
 	public Hand(){
+		hand =  new ArrayList<Card>();
 	}
 	
 	public void addToHand(Card c){
@@ -42,6 +43,10 @@ public class Hand {
 	public void sortByRank(){
 		rankComparator r1 = new rankComparator();
 		hand.sort(r1);
+	}
+	
+	public int handLength(){
+		return hand.size();
 	}
 
 }

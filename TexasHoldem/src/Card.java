@@ -3,13 +3,13 @@ import java.util.Comparator;
 public class Card{
     private int rank, suit;
 
-    private static String[] ranks = {"","2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King","Ace"};
+    private static String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King","Ace"};
     private static String[] suits = {"Diamonds", "Clubs", "Hearts", "Spades"};
 
     //Constructor
-    public Card(int r, int s){
-        rank =  (r -1);
-        suit = (s -1 );
+    public Card(int rank, int suit){
+        this.rank = rank;
+        this.suit = suit;
     }
 
     // Getter and Setters
@@ -46,7 +46,6 @@ public class Card{
 }
    
     class rankComparator implements Comparator<Card> {
-    	@Override
     	public int compare(Card c1, Card c2) {
     		int c1Size = c1.getRank();
     		int c2Size = c2.getRank();

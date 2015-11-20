@@ -44,11 +44,11 @@ public class HandEval {
 				break;
 			}
 			while (cardsNeeded > 0){	// calc odds to chance to get royal
-				System.out.println("cards needed " + cardsNeeded);
+				//System.out.println("cards needed " + cardsNeeded);
 				percentage = percentage * (cardsNeeded/cardsLeft);
 				cardsNeeded--;
 				cardsLeft--;
-				System.out.println("percent " +  percentage);
+				//System.out.println("percent " +  percentage);
 			}
 			x =0;
 			i = 0;
